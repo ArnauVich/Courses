@@ -224,4 +224,17 @@ hist(transposed_bacteria[,2], breaks=60)
 # First we devided values by 100 to adjust scale 0-1 
 
 divided_sp=transposed_species/100
+sp_transformed=asin(sqrt(divided_sp))
 
+# Now we compare the relative abundance of some bugs between the 2 phenotypes
+
+#Add phenotypes
+pheno_and_sp=merge(phenotypes, sp_transformed, by="row.names")
+rownames(pheno_and_sp)=pheno_and_sp$Row.names
+pheno_and_sp$Row.names=NULL
+
+#Check plot
+ggplot(pheno_and_sp, aes(DiagnosisCurrent,pheno_and_sp$`k__Bacteria|p__Proteobacteria|c__Gammaproteobacteria|o__Enterobacteriales|f__Enterobacteriaceae|g__Escherichia|s__Escherichia_coli`, fill=DiagnosisCurrent)) +geom_boxplot(alpha=0.7) + theme_bw() + geom_jitter() 
+ggplot(pheno_and_sp, aes(DiagnosisCurrent,pheno_and_sp$`k__Bacteria|p__Firmicutes|c__Clostridia|o__Clostridiales|f__Ruminococcaceae|g__Faecalibacterium|s__Faecalibacterium_prausnitzii`, fill=DiagnosisCurrent)) +geom_boxplot(alpha=0.7) + theme_bw() + geom_jitter()
+
+#
