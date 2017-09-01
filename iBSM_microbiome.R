@@ -200,7 +200,7 @@ orditorp(example_NMDS,display="species",col="red",air=0.01)
 orditorp(example_NMDS,display="sites",cex=1.25,air=0.01)
 ordihull(example_NMDS,groups=phenotypes_with_diversity$DiagnosisCurrent,draw="polygon",col="grey90",label=F)
 
-## Adonis (Diagnosis and Number of seq. reads p-value significant)
+## Adonis (Diagnosis and Number of seq. reads p-value significant). More info: http://cc.oulu.fi/~jarioksa/softhelp/vegan/html/adonis.html
 adon<-foreach(i=1:ncol(phenotypes),.combine=rbind)%do%{
     
          ad1<-adonis(beta ~ phenotypes[,i],permutations=999)
@@ -233,8 +233,9 @@ pheno_and_sp=merge(phenotypes, sp_transformed, by="row.names")
 rownames(pheno_and_sp)=pheno_and_sp$Row.names
 pheno_and_sp$Row.names=NULL
 
-#Check plot
-ggplot(pheno_and_sp, aes(DiagnosisCurrent,pheno_and_sp$`k__Bacteria|p__Proteobacteria|c__Gammaproteobacteria|o__Enterobacteriales|f__Enterobacteriaceae|g__Escherichia|s__Escherichia_coli`, fill=DiagnosisCurrent)) +geom_boxplot(alpha=0.7) + theme_bw() + geom_jitter() 
-ggplot(pheno_and_sp, aes(DiagnosisCurrent,pheno_and_sp$`k__Bacteria|p__Firmicutes|c__Clostridia|o__Clostridiales|f__Ruminococcaceae|g__Faecalibacterium|s__Faecalibacterium_prausnitzii`, fill=DiagnosisCurrent)) +geom_boxplot(alpha=0.7) + theme_bw() + geom_jitter()
+#Plot transformed relatives abudances of E.coli and F.Prausnitzii, Controls next to IBD. What do you see? 
+ggplot(pheno_and_sp, aes(DiagnosisCurrent,pheno_and_sp$`k__Bacteria|p__Firmicutes|c__Clostridia|o__Clostridiales|f__Lachnospiraceae|g__Roseburia|s__Roseburia_intestinalis`, fill=DiagnosisCurrent)) +geom_boxplot(alpha=0.7) + theme_bw() + geom_jitter() + scale_y_continuous(name="Roseburia instestinalis")
+ggplot(pheno_and_sp, aes(DiagnosisCurrent,pheno_and_sp$`k__Bacteria|p__Proteobacteria|c__Gammaproteobacteria|o__Enterobacteriales|f__Enterobacteriaceae|g__Escherichia|s__Escherichia_coli`, fill=DiagnosisCurrent)) +geom_boxplot(alpha=0.7) + theme_bw() + geom_jitter() + scale_y_continuous(name="E.coli")
+ggplot(pheno_and_sp, aes(DiagnosisCurrent,pheno_and_sp$`k__Bacteria|p__Firmicutes|c__Clostridia|o__Clostridiales|f__Ruminococcaceae|g__Faecalibacterium|s__Faecalibacterium_prausnitzii`, fill=DiagnosisCurrent)) +geom_boxplot(alpha=0.7) + theme_bw() + geom_jitter() + scale_y_continuous(name="F.Prausnitzii")
 
-#
+# We need to test if 
